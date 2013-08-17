@@ -1,0 +1,85 @@
+/* UDTranslator */
+#UDtranslator {
+    position: absolute; top: 0; left: 0; background: white; border: 1px #000 solid; width: 750px; text-align: left;
+}
+
+#UDtranslator ul.menu {
+    font: normal 16px Tahoma; color: #CD1818; margin: 10px 0 40px 0; text-align: left; padding: 0;
+    list-style: none;
+}
+
+#UDtranslator ul.menu li {
+    float: left;    
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding: 0 15px 0 15px;
+    margin: 0;
+    display: inline;
+    border-right: 1px solid #CCCCCC;
+}
+
+#UDtranslator ul.menu li a {
+    font: normal 16px Tahoma; color: #2D2D2D; text-decoration: underline;
+}
+
+#UDtranslator ul.menu li a:hover {
+    text-decoration: none;
+}
+
+#UDtranslator ul.menu li.last {
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding: 0 15px 0 15px;
+    margin: 0 12px 0 0px;
+    display: inline;
+    border-right: none;
+}
+
+#UDtranslator .translate {
+    width: 100%; border-top: 1px #5C5C5C dashed;
+}
+
+#UDtranslator .strings {
+    float: left; width: 300px; border-right: 1px #5C5C5C dashed; padding: 15px 0 15px 0;
+}
+
+#UDtranslator .strings p {
+    font: normal 12px Tahoma; color: #2D2D2D; margin: 0; text-align: left; padding: 0 0 0 17px; line-height: 18px;
+}
+
+#UDtranslator .strings p a {
+    font: normal 12px Tahoma; color: #125EAE; text-decoration: underline;
+}
+
+#UDtranslator .strings p a:hover {
+    text-decoration: none;
+}
+
+#UDtranslator .string {
+    float: left; width: 430px; padding: 15px 0 15px 15px;
+}
+
+#UDtranslator .string p {
+    font: normal 12px Tahoma; color: #2D2D2D; margin: 0; text-align: left; padding: 0; line-height: 18px;
+}
+
+#UDtranslator .string p a {
+    font: normal 12px Tahoma; color: #125EAE; text-decoration: underline;
+}
+
+#UDtranslator .string p a:hover {
+    text-decoration: none;
+}
+
+#UDtranslator .string form textArea {
+    font: normal 12px Tahoma; color: #2D2D2D; border: 1px #2d2d2d solid; width: 250px;
+}
+
+#UDtranslator .string form select, #UDtranslator .strings form select {
+    font: normal 12px Tahoma; color: #2D2D2D; border: 1px #2d2d2d solid; width: 250px; padding: 3px;
+}
+
+#UDtranslator .string form label, #UDtranslator .strings form label {
+    font: normal 12px Tahoma; color: #2D2D2D; margin: 0; padding: 0; 
+}
