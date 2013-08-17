@@ -1,0 +1,41 @@
+{block content}
+{if $auth->isAllowed('editor')}
+    <div id="UDtranslator">
+        <ul class="menu">
+            <li><a href="{link untranslatedStringOnPage!}">Untranslated on the page</a>{if $CuntranslatedOnPage} {$CuntranslatedOnPage}{/if}</li>
+            <li><a href="{link untranslated!}">Untranslated</a>{if $Cuntranslated} {$Cuntranslated}{/if}</li>
+            {if $auth->isAllowed('unclassified')}<li><a href="{link unclassified!}">Unclassified</a>{if $Cunclassified} {$Cunclassified}{/if}</li>{/if}
+            <li><a href="{link translated!}">Translated</a></li>
+            {if $auth->isAllowed('diagnostics')}<li class="last"><a href="{link diagnostics!}">Diagnostics</a></li>{/if}
+        </ul>
+        <div class="translate">    
+        {if isset($strings)}
+            <div class="strings">
+            {if $page != 'unclassified' AND $page != 'diagnostics'}{control categoryForm}{/if}
+            {if $page == 'diagnostics'}<p><strong>Unused strings</strong></p>{/if}
+            {foreach $strings As $s}
+                <p><a href="{if $s->prekladkategorie_id}{link translate!, $s->id, $page}{else}{link classify!, $s->id, $page}{/if}">{$s->retezec}</a> {if $s->prekladkategorie_id}({$s->prekladkategorie->nazev}){/if} {if $page == 'diagnostics' AND $auth->isAllowed('diagnostics')}<a href="{link deleteDiagnostics!, $s->id}" title="Delete all strings" onclick="return confirm('Are you sure to continue deleting unused string?');">delete</a>{/if}</p>
+            {/foreach}
+            </div>
+        {/if}     
+        {if isset($string) OR $flashes OR $page == 'diagnostics'}
+        <div class="string">   
+            {if $page == 'diagnostics' AND $auth->isAllowed('diagnostics')}
+                <p>Status: {if $strings}<a href="{link turnOffDiagnostics!}" title="Turn off">ON</a><br />
+                           Start: {$diagnosticDate->diff($today)->format('%a days ago')}<br /> 
+                           Delete {count($strings)} unused string(s) <a href="{link deleteDiagnostics!}" title="Delete all strings" onclick="return confirm('Are you sure to continue deleting unused strings?');">here</a>.
+                           {else}<a href="{link turnOnDiagnostics!}" title="Turn on">OFF</a> (This setting can slow down the application){/if}
+            {/if}
+            {foreach $flashes as $flash}
+                <p class="flash {$flash->type}">{$flash->message}</p>
+            {/foreach}
+            {if isset($string)}      
+                <p><strong>{$string->retezec}</strong></p>
+                {if !$s->prekladkategorie_id}{if $auth->isAllowed('unclassified')}{control classifyForm}{/if}{else}<p>Category: {$string->prekladkategorie->nazev}</p>{/if}
+                {if $s->prekladkategorie_id}{control addTranslationForm}{/if}
+            {/if}
+        </div>   
+        {/if}
+        </div>
+    </div>
+{/if}
