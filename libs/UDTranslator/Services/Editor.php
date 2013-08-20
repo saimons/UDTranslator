@@ -23,7 +23,7 @@ class Editor extends UI\Control {
 
     /** @var UDTranslator\DBStorage */
     private $dbStorage;
-    
+
     /** @var UDTranslator\Diagnostics */
     private $diagnostics;
 
@@ -86,14 +86,12 @@ class Editor extends UI\Control {
         if (isset($this->pages['untranslated']) AND $this->pages['untranslated']) {
             $template->strings = $this->dbStorage->applyCategoryFilter($untranslated, $this->category_id);
         }
-
         //handleUnclassified()
         $unclassified = $this->dbStorage->getUnclassified();
         $template->Cunclassified = count($unclassified);
-        if (isset($this->pages['unclassified']) AND $this->pages['unclassified']) {
-            $template->strings = $this->dbStorage->applyCategoryFilter($unclassified, $this->category_id);
-        }
-
+//        if (isset($this->pages['unclassified']) AND $this->pages['unclassified']) {
+//            $template->strings = $this->dbStorage->applyCategoryFilter($unclassified, $this->category_id);
+//        }
         //handleTranslated()
         if (isset($this->pages['translated']) AND $this->pages['translated']) {
             $template->strings = $this->dbStorage->applyCategoryFilter($this->dbStorage->getTranslatedStrings(), $this->category_id);
@@ -179,13 +177,13 @@ class Editor extends UI\Control {
             $this->diagnostics->turnOfDiagnostics();
         }
     }
-    
+
     public function handleDeleteDiagnostics($id = 0) {
         if ($this->authorization->isAllowed('diagnostics')) {
             $this->diagnostics->deleteDiagnostic($id);
             $this->pages['diagnostics'] = TRUE;
         }
-    } 
+    }
 
     /**
      * Generate forms and data for translate
@@ -269,31 +267,6 @@ class Editor extends UI\Control {
         }
     }
 
-    /**
-     * Component form for classifying category of string
-     * @return Nette\Application\UI\Form
-     */
-    protected function createComponentClassifyForm() {
-        $form = new Form;
-
-        $form->addSelect('category_id', 'Select category', $this->dbStorage->getCategories())
-                ->setRequired('This item must be filled.');
-
-        $form->addHidden('page', array_search(TRUE, $this->pages));
-        $form->addSubmit('save', 'Save category');
-
-        $form->onSuccess[] = callback($this, 'classifyFormSubmitted');
-        return $form;
-    }
-
-    public function classifyFormSubmitted(Form $form) {
-        if ($this->authorization->isAllowed('unclassified')) {
-            $data = $form->getValues();
-            $this->dbStorage->saveCategory($this->translationbase_id, $data);
-            $this->flashMessage('Category was assigned.');
-            $this->presenter->redirect('translatorEditor-' . $data->page . '!');
-        }
-    }
 
     /**
      * Component for filtrin category
@@ -316,6 +289,40 @@ class Editor extends UI\Control {
         $data = $form->getValues();
         $this->category_id = $data->category_id;
         $this->presenter->redirect('translatorEditor-' . $data->page . '!');
+    }
+
+    /**
+     * Component form for translation
+     * @return Nette\Application\UI\Form
+     */
+    protected function createComponentUnclassifiedForm() {
+        $form = new Form;
+
+        $unclassified = $this->dbStorage->getUnclassified();
+
+        $container = $form->addContainer('strings');
+        $form->addSelect('category_id', 'Move strings to', $this->dbStorage->getCategories())
+                ->setRequired('This item must be filled.');
+
+        foreach ($unclassified AS $u) {
+            $container->addCheckbox($u->id, $u->retezec);
+        }
+
+        $form->addCheckbox('untranslatable', 'Set all selected strings as untranslatable.');
+        $form->addHidden('page', array_search(TRUE, $this->pages));
+        $form->addSubmit('save', 'Move translations to categry');
+
+        $form->onSuccess[] = callback($this, 'unclassifiedFormSubmitted');
+        return $form;
+    }
+
+    public function unclassifiedFormSubmitted(Form $form) {
+        if ($this->authorization->isAllowed('unclassified')) {
+            $data = $form->getValues();
+            $this->dbStorage->saveCategory($data->category_id, $data->strings, $data->untranslatable);
+            $this->flashMessage('Category was assigned.');
+            $this->presenter->redirect('translatorEditor-' . $data->page . '!');
+        }
     }
 
 }

@@ -112,9 +112,9 @@ class DBStorage extends Nette\Object {
     public function getUntranslated() {
         $translated = $this->getPrekladlokalizace()->select('DISTINCT prekladlokalizace.prekladzaklad_id AS id');
         if (count($translated)) {
-            return $this->getPrekladzaklad()->where('prekladkategorie_id IS NOT NULL')->where('id NOT IN (?)', $translated);
+            return $this->getPrekladzaklad()->where('prekladkategorie_id IS NOT NULL')->where('neprelozitelne', 0)->where('id NOT IN (?)', $translated);
         } else {
-            return $this->getPrekladzaklad()->where('prekladkategorie_id IS NOT NULL');
+            return $this->getPrekladzaklad()->where('prekladkategorie_id IS NOT NULL')->where('neprelozitelne', 0);
         }
     }
 
@@ -124,7 +124,7 @@ class DBStorage extends Nette\Object {
      * @return Nette\Database\Table\Selection
      */
     public function getStringsByHash($hashs) {
-        return $this->getPrekladzaklad()->where('MD5(retezec) IN ?', $hashs)->where('prekladkategorie_id IS NOT NULL');
+        return $this->getPrekladzaklad()->where('MD5(retezec) IN ?', $hashs)->where('prekladkategorie_id IS NOT NULL')->where('neprelozitelne', 0);
     }
 
     /**
@@ -205,13 +205,18 @@ class DBStorage extends Nette\Object {
     }
 
     /**
-     * Assign category to string
-     * @param int $prekladzaklad_id
+     * Assign category to strings
+     * @param int $prekladkategorie_id
      * @param array $data
+     * @param bool $neprelozitelne
      * @return bool
      */
-    public function saveCategory($prekladzaklad_id, $data) {
-        return $this->getPrekladzaklad()->where('id', $prekladzaklad_id)->update(array('prekladkategorie_id' => $data->category_id));
+    public function saveCategory($prekladkategorie_id, $data, $neprelozitelne = FALSE) {
+        foreach ($data AS $k => $s) {
+            if ($s) {
+                $this->getPrekladzaklad()->where('id', $k)->update(array('prekladkategorie_id' => $prekladkategorie_id, 'neprelozitelne' => $neprelozitelne));
+            }
+        }
     }
 
     /**
@@ -237,7 +242,7 @@ class DBStorage extends Nette\Object {
         }
         return $data;
     }
-    
+
     /**
      * Delete unused string from DB by id
      * @param int $id

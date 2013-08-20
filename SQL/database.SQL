@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `prekladzaklad` (
   `prekladkategorie_id` tinyint(3) unsigned DEFAULT NULL,
   `retezec` varchar(255) COLLATE utf8_czech_ci NOT NULL,
   `retezec_md5` binary(16) NOT NULL,
+  `neprelozitelne` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `retezec_md5_UNIQUE` (`retezec_md5`),
   KEY `FK_prekladzaklad_prekladkategorie` (`prekladkategorie_id`)

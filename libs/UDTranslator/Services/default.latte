@@ -18,7 +18,7 @@
             {/foreach}
             </div>
         {/if}     
-        {if isset($string) OR $flashes OR $page == 'diagnostics'}
+        {if isset($string) OR $flashes OR $page == 'diagnostics' OR $page == 'unclassified'}
         <div class="string">   
             {if $page == 'diagnostics' AND $auth->isAllowed('diagnostics')}
                 <p>Status: {if $strings}<a href="{link turnOffDiagnostics!}" title="Turn off">ON</a><br />
@@ -31,8 +31,11 @@
             {/foreach}
             {if isset($string)}      
                 <p><strong>{$string->retezec}</strong></p>
-                {if !$s->prekladkategorie_id}{if $auth->isAllowed('unclassified')}{control classifyForm}{/if}{else}<p>Category: {$string->prekladkategorie->nazev}</p>{/if}
+                {if $s->prekladkategorie_id}<p>Category: {$string->prekladkategorie->nazev}</p>{/if}
                 {if $s->prekladkategorie_id}{control addTranslationForm}{/if}
+            {/if}
+            {if $page == 'unclassified' AND $auth->isAllowed('unclassified')}
+                {control unclassifiedForm}
             {/if}
         </div>   
         {/if}
