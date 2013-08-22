@@ -69,6 +69,11 @@ class Editor extends UI\Control {
     }
 
     public function render() {
+        //if editor is not allowed, everthing will be stoped
+        if (!$this->authorization->isAllowed('editor')) {
+            return;
+        }
+        
         $template = $this->getTemplate();
         $template->setFile(dirname(__FILE__) . "/default.latte");
         $template->authorization = $this->authorization;
@@ -89,9 +94,7 @@ class Editor extends UI\Control {
         //handleUnclassified()
         $unclassified = $this->dbStorage->getUnclassified();
         $template->Cunclassified = count($unclassified);
-//        if (isset($this->pages['unclassified']) AND $this->pages['unclassified']) {
-//            $template->strings = $this->dbStorage->applyCategoryFilter($unclassified, $this->category_id);
-//        }
+
         //handleTranslated()
         if (isset($this->pages['translated']) AND $this->pages['translated']) {
             $template->strings = $this->dbStorage->applyCategoryFilter($this->dbStorage->getTranslatedStrings(), $this->category_id);
