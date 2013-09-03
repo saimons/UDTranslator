@@ -72,7 +72,7 @@ abstract class BasePresenter extends Presenter {
         $template = parent::createTemplate($class);        
         // if not set, the default language will be used
         if (!isset($this->lang)) {
-            $this->lang = $this->translator->getLang();
+            $this->lang = 'en';
         } else {
             $this->translator->setLang($this->lang);
         }
