@@ -308,7 +308,12 @@ class StringStorage extends Nette\Object {
      * @param string $string
      */
     public function isPlural($string) {
-        return Strings::contains($string, '%s');
+        if (Strings::contains($string, '%s') OR Strings::contains($string, '%d')) {
+            $ret = TRUE;
+        } else {
+            $ret = FALSE;
+        }
+        return $ret;
     }
 
     /**

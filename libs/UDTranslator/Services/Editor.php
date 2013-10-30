@@ -247,7 +247,7 @@ class Editor extends UI\Control {
             $container->addTextArea($i, $label, 20, 2)
                     ->setRequired('This item must be filled.');
             if ($this->plural) {
-                $container[$i]->addRule(Form::PATTERN, 'The string must contain the sign for number.', '.*(%s).*');
+                $container[$i]->addRule(Form::PATTERN, 'The string must contain the sign for number.', '.*(%s).*|.*(%d).*');
             }
         }
 

@@ -97,6 +97,11 @@ class NetteTranslator extends Nette\Object implements Nette\Localization\ITransl
         } elseif (!is_int($count) || $count === NULL) {
             $count = 1;
         }
+        
+        //check is the message is plural (%d,%s)
+        if (!$this->stringStorage->isPlural($message)) {
+            $count = 1;
+        }
 
         $form = $this->stringStorage->getPluralForms($count);
 
@@ -109,13 +114,15 @@ class NetteTranslator extends Nette\Object implements Nette\Localization\ITransl
         if (is_array($message)) {
             $message = current($message);
         }
+       
 
-        if ($form > 1) {
+        //if ($form > 1) { mozna chyba kvuli pluraru kdyz je jednicka
             $message = str_replace(array('%label', '%name', '%value'), array('#label', '#name', '#value'), $message);
             $message = vsprintf($message, $count);
             $message = str_replace(array('#label', '#name', '#value'), array('%label', '%name', '%value'), $message);
-        }
-
+        //}
+            $message = str_replace(array("'"), array('\u2019'), $message);
+            
         return $message;
     }
 
