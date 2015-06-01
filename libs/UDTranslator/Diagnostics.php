@@ -154,8 +154,8 @@ class Diagnostics extends Nette\Object {
     public function unsetString($message) {
         $hash = md5($message);
         $cache = $this->cache['diagnostics'];
-
-        if (in_array($hash, $cache['strings'])) {            
+        
+        if (in_array($hash, $cache['strings'])) { 
             $this->checkString($hash, $cache);            
         }
     }
@@ -170,7 +170,7 @@ class Diagnostics extends Nette\Object {
             $this->saveKeyFile($hash);
             $date = $cache['date'];
             $date->add(\DateInterval::createFromDateString($this->time));
-            if (new \DateTime > $date) {
+            if (new \DateTime > $date) {                
                 $this->rebuildCache($cache);
             }
         } else {

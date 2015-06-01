@@ -3,6 +3,7 @@
 namespace UDTranslator\Services;
 
 use Nette\Security\User,
+    Nette\Database\Context,
     Nette;
 
 /**
@@ -26,7 +27,7 @@ class Authorization extends Nette\Object {
     /** @var bool */
     private $DBAuth;
 
-    public function __construct(User $user, Nette\Database\Connection $database) {
+    public function __construct(User $user, Context $database) {
         $this->user = $user;
         $this->database = $database;
     }

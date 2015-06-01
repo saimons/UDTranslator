@@ -69,7 +69,7 @@ class NetteTranslator extends Nette\Object implements Nette\Localization\ITransl
     /**
      * Translate given string
      * @param string $message
-     * @param int $form plural form (positive number)
+     * @param int $count plural form (positive number)
      * @return string
      */
     public function translate($message, $count = 1) {
@@ -121,7 +121,7 @@ class NetteTranslator extends Nette\Object implements Nette\Localization\ITransl
             $message = vsprintf($message, $count);
             $message = str_replace(array('#label', '#name', '#value'), array('%label', '%name', '%value'), $message);
         //}
-            $message = str_replace(array("'"), array('\u2019'), $message);
+            $message = str_replace(array("'"), array('’'), $message);
             
         return $message;
     }

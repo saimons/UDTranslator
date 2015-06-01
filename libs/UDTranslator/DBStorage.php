@@ -3,6 +3,7 @@
 namespace UDTranslator;
 
 use Nette,
+        Nette\Database\Context,
     Nette\Database\SqlLiteral;
 
 class DBStorage extends Nette\Object {
@@ -19,7 +20,7 @@ class DBStorage extends Nette\Object {
     /** @var string */
     private $pluralForms;
 
-    public function __construct(Nette\Database\Connection $database) {
+    public function __construct(Context $database) {
         $this->database = $database;
     }
 
@@ -124,7 +125,7 @@ class DBStorage extends Nette\Object {
      * @return Nette\Database\Table\Selection
      */
     public function getStringsByHash($hashs) {
-        return $this->getPrekladzaklad()->where('MD5(retezec) IN ?', $hashs)->where('prekladkategorie_id IS NOT NULL')->where('neprelozitelne', 0);
+        return $this->getPrekladzaklad()->where('MD5(retezec) IN ?', array_values($hashs))->where('prekladkategorie_id IS NOT NULL')->where('neprelozitelne', 0);
     }
 
     /**

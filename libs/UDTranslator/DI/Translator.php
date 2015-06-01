@@ -22,24 +22,24 @@ class UDTranslator extends Nette\DI\CompilerExtension {
         $builder = $this->getContainerBuilder();
 
         $builder->addDefinition($this->prefix('DBStorage'))
-                ->setClass('UDTranslator\DBStorage', array('@database'));
+                ->setClass('UDTranslator\DBStorage', array('@nette.database.stadionmanager.context'));
 
         $builder->addDefinition($this->prefix('stringstorage'))
                 ->setClass('UDTranslator\StringStorage', array('@session', '@cacheStorage', $this->prefix('@DBStorage')));
         
         $builder->addDefinition($this->prefix('diagnostics'))
                 ->setClass('UDTranslator\Diagnostics', array('@cacheStorage', $this->prefix('@DBStorage')))
-                ->addSetup('setDiagnosticsTime', $config['diagnostics']['time'])
-                ->addSetup('setDiagnosticsPath', $config['diagnostics']['path'])
-                ->addSetup('setDiagnosticsLimit', $config['diagnostics']['limit']);
+                ->addSetup('setDiagnosticsTime', array($config['diagnostics']['time']))
+                ->addSetup('setDiagnosticsPath', array($config['diagnostics']['path']))
+                ->addSetup('setDiagnosticsLimit', array($config['diagnostics']['limit']));
 
         $builder->addDefinition($this->prefix('Translator'))
                 ->setClass('UDTranslator\NetteTranslator', array($this->prefix('@stringstorage'), $this->prefix('@diagnostics')))
-                ->addSetup('setDebugMode', $config['debugMode']);
+                ->addSetup('setDebugMode', array($config['debugMode']));
 
         $builder->addDefinition($this->prefix('UDTAuthorization'))
-                ->setClass('UDTranslator\Services\Authorization', array('@user', '@database'))
-                ->addSetup('setAdministratorRole', $config['adminRole']);
+                ->setClass('UDTranslator\Services\Authorization', array('@user', '@nette.database.stadionmanager.context'))
+                ->addSetup('setAdministratorRole', array($config['adminRole']));
 
         $builder->addDefinition($this->prefix('editor'))
                 ->setClass('UDTranslator\Services\Editor', array($this->prefix('@stringstorage'), $this->prefix('@DBStorage'), $this->prefix('@UDTAuthorization'), $this->prefix('@diagnostics')));
