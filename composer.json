@@ -1,0 +1,25 @@
+{
+    "name": "saimons/UDTranslator",
+    "type": "library",
+    "description": "Localization web plugin for Nette Framework.",
+    "homepage": "https://github.com/saimons/UDTranslator",
+    "keywords": ["translator","localization","nette"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stepan Novak",
+            "email": "novak@nobel.cz",
+            "homepage": "http://nobel-system.cz/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+		"nette/nette": "~2.2",
+    },
+    "autoload": {
+        "psr-0": {
+            saimons\\UDTranslator": "src/
+        }
+    }
+}
