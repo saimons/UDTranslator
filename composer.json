@@ -1,5 +1,5 @@
 {
-    "name": "saimons/UDTranslator",
+    "name": "saimons/ud-translator",
     "type": "library",
     "description": "Localization web plugin for Nette Framework.",
     "homepage": "https://github.com/saimons/UDTranslator",
