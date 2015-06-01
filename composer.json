@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-0": {
-            saimons\\UDTranslator": "src/
+            "saimons\\UDTranslator": "src/"
         }
     }
 }
